@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            font-size:12px;
+            color:#373737;
+            font-family:"monospace"
+        }
+        .container{
+            overflow:hidden;
+            margin:4px;
+            padding: 6px;
+            border:2px dashed #bfbfbf;
+        }
+        .container>div{
+            clear:both;
+        }
+        .container div div{
+            display:inline-block;
+            float:left;
+            line-height:100%;
+            font-size:12px;
+            background-color:inherit;
+        }
+        @media (min-width:480px) {
+            .container div div{
+                margin:6px 2%;
+                text-align:center;
+            }
+            .container div div:nth-of-type(1) {
+                width: 80px;
+            }
+            .container div div:nth-of-type(2) {
+                width: 150px;
+            }
+        }
+        @media (min-width:350px) and (max-width:480px) {
+            .container div div:nth-of-type(1) {
+            }
+            .container div div:nth-of-type(1):after,
+            .container div div:nth-of-type(2):after{
+                content:" :-) ,  ";
+            }
+            .container div div:nth-of-type(3):after {
+                content:";"
+            }
+        }
+        @media (max-width:350px) {
+            .container div{text-align:left;}
+            .container div div:nth-of-type(1) {
+                width: 50px;
+            }
+            .container div div:nth-of-type(1):after,
+            .container div div:nth-of-type(2):after{
+                content:", ";
+            }
+            .container div div:nth-of-type(2) {
+                width: 102px;
+            }
+            .container div div:nth-of-type(3):before {
+                clear:both;
+            }
+            .container div div:nth-of-type(3) {
+                display:block;
+                width: 100%;
+                text-align:left;
+            }
+            .container div div:nth-of-type(3):after {
+                position:relative;
+                content:";"
+            }
+        }
+    </style>
+</head>
+<body>
+</body>
+</html>
+<script>
+    var htmlStr=``; var a=[0,127,255]; var count=0;
+    function getHexCode(num){
+        var a=[0,1,2,3,4,5,6,7,8,9,"a","b","c","d","e","f"];
+        if(num<0){console.error("传入的参数小于0");  num=0;}
+        if(num>255){console.error("传入的参数大于255");  num=255;}
+        return num===0?"00":""+a[parseInt(num / 16)] + a[num % 16];
+    }
+    var oContainer=document.createElement("div");
+    oContainer.className="container";
+    function appendToContainer(){
+        var oRow=document.createElement("div");
+        oRow.style.backgroundColor=color;
+        oRow.className="row";
+        var oHexCode=document.createElement("div");
+        oHexCode.innerText=hexCode;
+        var oColor=document.createElement("div");
+        oColor.innerText=color;
+        var other=document.createElement("div");
+        other.innerHTML=`&nbsp;&nbsp;&nbsp;&nbsp;第${++count}个色址: ${color}`;
+        oRow.appendChild(oHexCode);
+        oRow.appendChild(oColor);
+        oRow.appendChild(other);
+        oRow.style.height=Math.ceil(((document.documentElement.clientHeight||document.body.clientHeight)-24)/Math.pow(a.length,3))+"px";
+        oContainer.appendChild(oRow);
+    }
+    for (var i = 0; i <a.length ; i++) {
+        for (var j = 0; j <a.length ; j++) {
+            for (var k = 0; k <a.length ; k++) {
+                var rgbSum=a[i]+a[j]+a[k];
+//                if(rgbSum===0||rgbSum===255*3) continue;
+                var hexCode=`#${getHexCode(a[i])}${getHexCode(a[j])}${getHexCode(a[k])}`;
+                var color=`rgb(${a[i]},${a[j]},${a[k]})`;
+                appendToContainer(hexCode,color);
+            }
+        }
+    }
+    document.body.appendChild(oContainer);
+</script>
